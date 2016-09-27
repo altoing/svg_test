@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+	<script src="jquery.min.js"></script>
+	<script src="snap.svg-min.js"></script>
+	
+</head>
+<body>
+	<object id="svg-object" data='out.svg' type='image/svg+xml' width="100%"></object>
+	
+<button id=high>High
+</button>
+
+<button id=average>Average
+</button>
+
+<button id=warning>Warining
+</button>
+
+<button id=fix>Fix it!
+</button>
+
+<script>
+$(window).on("load", function() { // Запускаем только при загрузке страницы
+'use strict'
+    
+var rootPaper = Snap("#svg-object"); // Привязываемся к загруженной svg
+var g = rootPaper.selectAll('.tul7_AGG_27'); // Выбираем элемент
+var x = 0; //Пару перемены для счетчиков, что же джава скрипт не питон...
+var y = 0;
+
+// Вызывам фунцию, при нажатии кнопки с <id>, для всех элементов <g>, помигать цветом <#FFF> 
+run_blink ("#high", g, "#ff0000");
+run_blink ("#average", g, "#FFA059");
+run_blink ("#warning", g, "#FFC859");
+
+// При нажатии кнопки с <fix>, для всех элементов <g>, Помигать зелениньким и вернуться к синему
+fix_run ("#fix", g);
+
+// функция мигания
+function run_blink(selector, elements, color){
+    $(selector).on("click", function(){
+    var x = 0;
+    blink(elements, color)
+    });
+}
+
+function blink(element, color){
+    if (x < 5) {
+    element.animate({ fill: "#046897"}, 1000,
+        function(){ 
+            element.attr({ fill: color}, 1);
+            x++;
+            blink(element, color);
+            }
+    );
+    } else {
+    element.attr({fill: color});
+    x = 0;
+}
+}
+
+//функция фикса для всех элемнтов
+function fix_run(selector, elements){
+    $(selector).on("click", function(){
+    elements.forEach( function(elem) {
+    elem.stop();        //Сбрасываем анимацию у всех элементов, группой снап сбрасывать не умеет:(
+    });
+    var y = 0; 
+    fix(elements);
+    });
+}
+
+function fix(elements) {
+    if (y < 4) {
+    elements.animate({ fill: "#046897"}, 160,
+        function(){ 
+            elements.attr({ fill: "#00ff00"}, 1); 
+            y++;
+            fix(elements);
+            }
+    );
+    } else {
+    elements.attr({fill: "#046897"});
+    y = 0;
+    }
+}
+
+});
+</script>
+
+</body>
+</html>
